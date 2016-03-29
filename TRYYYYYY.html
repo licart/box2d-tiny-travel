@@ -1,0 +1,448 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo by lavisrap</title>
+  
+  
+   <script src="jquery.min.js"></script>
+   <script type="text/javascript" src="Box2dWeb-2.1.a.3.min.js"></script>    
+  
+<style type="text/css">* {    margin: 0;    padding: 0;    overflow: hidden;}  </style>
+
+</head>
+<body>
+  <canvas id="b2dCanvas" ></canvas>
+<video   id="theVideo" ended=lache() style="display:none;" width="320" height="240"></video>
+<video   id="theVideo2"  style="display:none;" width="320" height="240"></video>
+<video   id="theVideo3"  style="display:none;" width="320" height="240"></video>
+<video   id="theVideo4"  style="display:none;" width="320" height="240"></video>
+<video   id="theVideo5"  style="display:none;" width="320" height="240"></video>
+<video   id="theVideo6"  style="display:none;" width="320" height="240"></video>
+
+   <script type="text/javascript" src="teleferikA.js"></script>
+   <script type="text/javascript" src="bateauT.js"></script>
+
+<script type="text/javascript">
+    var b2Vec2 = Box2D.Common.Math.b2Vec2,
+        b2BodyDef = Box2D.Dynamics.b2BodyDef,
+        b2Body = Box2D.Dynamics.b2Body,
+        b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+        b2World = Box2D.Dynamics.b2World,
+        b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+        b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,          
+        b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+		b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef ,
+  b2PrismaticJoint = Box2D.Dynamics.Joints.b2PrismaticJointDef,
+			b2DistanceJointDef = Box2D.Dynamics.Joints.b2DistanceJointDef,  
+    b2Transform = Box2D.Common.Math.b2Transform,
+   b2FilterData = Box2D.Dynamics.b2FilterData;
+    
+    var world = new b2World( new b2Vec2(0, 10), true );
+	
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight;
+var TO_RADIANS=Math.PI/180;			
+			particles = [],
+			MAX_PARTICLES = 60,
+			particleImage = new Image();
+				particleImage.src = 'crate42.png'; 
+				
+	var magnet=false;
+    var offsetX=0;
+	var offsetY=0; 
+
+	var SCALE=30;
+	var scale=30;
+
+		var D2R = Math.PI / 180;
+		var R2D = 180 / Math.PI;
+		var PI2 = Math.PI * 2;
+   var imglo = new Image();
+   imglo.src = "duct.png";
+   var imgdesert = new Image();
+   //imgdesert.src = "sahara.png";
+   imgdesert.src = "saharaA.jpg";
+   var imgsaharaB = new Image();
+   imgsaharaB.src = "saharaB.png";
+	var imageportal = new Image();
+    imageportal.src = 'focusing2.png';
+   var desert_in_saudi = new Image();
+   desert_in_saudi.src = "desert_in_saudi.jpg";
+   var imagebox = new Image();
+   imagebox.src = 'character.png';
+   var imageazul = new Image();
+   imageazul.src = 'sprite-rey_azulB.png';
+    fond2=new Image();
+    fond2.src="desertlib3.png";
+        var img = new Image();
+        img.src = "flecheB.png";
+        var img2 = new Image();
+        img2.src = "lebqteautxt2.png";
+	
+
+		
+ var frame = 0, light_frame = 0, azul_frame = 0, azul_frame2 = 0, engineer_state = 0, engineer_frame = 0, dir = 1;
+ 
+	var ang = 0;
+	var sc = 0;
+var animazul = 0;
+var animazul1 = 0;
+var animLevel2 = 0;
+var animLevel3 = 0;
+var animLevel4 = 0;
+ 
+			var audio = new Audio("hitMedium.wav");
+			var audioW = new Audio("water.mp3");
+        canvas = document.getElementById("b2dCanvas");
+       context = canvas.getContext("2d");  
+	
+	canvas.width = WIDTH;
+	canvas.height = HEIGHT;
+
+		var contacts;
+		var pull = [];
+	
+var canvasOffset = { x: 0, y: 0 }; 
+var viewCenterPixel = { x:1000, y:100 };
+var originTransform;
+var D2R = Math.PI / 180;
+		var R2D = 180 / Math.PI;
+		var PI2 = Math.PI * 2;
+var PTM = 1;  
+var animLevel2=1;
+	var drawtelefer=false;
+
+function myRound(val,places) { var c = 1; for (var i = 0; i < places; i++)  c *= 10;  return Math.round(val*c)/c;}
+function getWorldPointFromPixelPoint(pixelPoint) {
+    var posA = { x: (pixelPoint.x - canvasOffset.x)/PTM, y: (pixelPoint.y - (canvas.height - canvasOffset.y))/PTM };
+    return posA;
+}
+function setViewCenterWorld(b2vecpos, instantaneous) {
+    var currentViewCenterWorld = getWorldPointFromPixelPoint( viewCenterPixel );
+    var toMoveX = b2vecpos.x - currentViewCenterWorld.x;
+    var toMoveY = b2vecpos.y - currentViewCenterWorld.y;
+    var fraction = instantaneous ? 1 : 0.25;
+    canvasOffset.x -= myRound(fraction * toMoveX * PTM, 0);
+    canvasOffset.y += myRound(fraction * toMoveY * PTM, 0);
+}
+function zoomIn() {
+    var currentViewCenterWorld = getWorldPointFromPixelPoint( viewCenterPixel );
+    PTM *= 2; if(PTM>2){PTM=2};
+    var newViewCenterWorld = getWorldPointFromPixelPoint( viewCenterPixel );
+    canvasOffset.x += (newViewCenterWorld.x-currentViewCenterWorld.x) * PTM ;
+    canvasOffset.y -= (newViewCenterWorld.y-currentViewCenterWorld.y) * PTM;
+}
+
+function zoomOut() {
+    var currentViewCenterWorld = getWorldPointFromPixelPoint( viewCenterPixel );
+    PTM /= 2; if(PTM<1){PTM=1}
+    var newViewCenterWorld = getWorldPointFromPixelPoint( viewCenterPixel );
+    canvasOffset.x += (newViewCenterWorld.x-currentViewCenterWorld.x) * PTM;
+    canvasOffset.y -= (newViewCenterWorld.y-currentViewCenterWorld.y) * PTM;
+}
+
+
+function RigidBody(world, data) {
+this.data = data;
+     fixDef  = new b2FixtureDef();
+        fixDef.density = data.density != null ? data.density : 1.0;
+        fixDef.friction = data.friction != null ? data.friction : 0.5;
+        fixDef.restitution = data.restitution != null ? data.restitution : 0.2;
+        this.bodyDef = new b2BodyDef();
+        this.bodyDef.type = data.type == "static" ? b2Body.b2_staticBody : b2Body.b2_dynamicBody;
+        fixDef.shape = new b2PolygonShape();
+	fixDef.filter.groupIndex = data.filter;
+        fixDef.shape.SetAsBox(data.width, data.height);
+         this.bodyDef.position = new b2Vec2(data.x/2 , data.y/2 );
+        this.body = world.CreateBody(this.bodyDef);
+        this.body.CreateFixture(fixDef);
+    }
+    
+    RigidBody.prototype = {
+        constructor: RigidBody,
+        meterPerPixel: 20,
+        update: function () { 
+    var pos2 = this.body.GetPosition()*scale,
+        angle2 = this.body.GetAngle()/180 ;
+    context.save();
+   context.translate(pos2.x,pos2.y);
+   context.rotate(angle2);
+    if(this.data.color) {
+		context.fillStyle = this.data.color;
+		context.fillRect(  this.body.GetPosition().x*scale-this.data.width*scale,
+                           this.body.GetPosition().y*scale-this.data.height*scale,
+                           (this.data.width*2)*scale,
+                           (this.data.height*2)*scale);
+						   }
+		
+    if(this.data.image) {
+      context.drawImage(this.data.image,
+                        this.body.GetPosition().x*scale-this.data.width*scale,
+                           this.body.GetPosition().y*scale-this.data.height*scale,
+                        (this.data.width*2)*scale,
+                           (this.data.height*2)*scale);
+    }				   
+		context.restore();
+        }
+    };
+    
+var Droid = function(world, details2) {
+
+    this.details2 = details2 ;
+        this.bodyDef2 = new b2BodyDef();
+        this.bodyDef2.type = b2Body.b2_dynamicBody;
+      this.bodyDef2.fixedRotation = true; // Prevent any rotation
+		this.bodyDef2.allowSleep = false;
+        this.bodyDef2.position.Set(55/scale, -520/scale); 
+        this.body = world.CreateBody(this.bodyDef2);   
+		this.bodyDef2.SetuserData = details2;     
+        // BODY FIXTURE 
+        fixDef = new b2FixtureDef();
+        fixDef.shape = new b2PolygonShape;
+        fixDef.shape.SetAsOrientedBox((35 / 2 / scale), (70 / 2 / scale), new b2Vec2(0,-20/2/scale));
+        fixDef.density = 1.0;
+        fixDef.friction = 1;
+        fixDef.restitution = 0.2;
+	fixDef.filter.groupIndex = -3;
+       this.body.CreateFixture(fixDef);        
+        // FOOT FIXTURE 
+        fixDef.shape = new b2CircleShape(35/2/scale);
+        fixDef.shape.SetLocalPosition(new b2Vec2(0, 50/2/scale));
+        fixDef.density = 1.0 || details.density;
+        fixDef.friction = 0.8;
+        fixDef.restitution = 0.3;
+	fixDef.filter.groupIndex = -3;
+        this.body.CreateFixture(fixDef);              
+        // FOOT SENSOR
+      fixDef.userData = "Foot";
+        fixDef.shape = new b2PolygonShape;
+	fixDef.filter.groupIndex = -3;
+        fixDef.shape.SetAsOrientedBox((10 / 2 / scale), (10 / 2 / scale), new b2Vec2(0,(85 / 2 / scale)));
+        fixDef.isSensor = true;
+        this.body.CreateFixture(fixDef);		
+	}
+	
+	
+				 var droid = new Droid(world, {userData: 'droid'});
+	
+	fix2 = new Rigid(world, { color: "red", shape: "block", density: 0.01, filter: 1, x:55/scale, y: -1000/scale, height: 10/scale, width: 20/scale, userData: 'box'}); 
+	fix22 = new Rigid(world, { color: "blue", shape: "block", density: 1, filter: 1, x:95/scale, y: -1000/scale, height: 30/scale, width: 30/scale, userData: 'box22'}); 			
+	UPground = new Rigid(world, { shape: "block",type: "static", angle: -Math.PI / 85, filter: 1, x:360/scale, y: -910/scale, height: 1/scale,  width: 450/scale});  
+	UPgroundL = new Rigid(world, { shape: "block",type: "static", angle: Math.PI / 55, filter: 1, x:-700/scale, y: -890/scale, height: 1/scale,  width: 300/scale});  
+	fix5 = new Rigid(world, {shape: "block", type: "static", sensor: true, x: -620/scale, y: -1000/scale, height: 10/scale,  width:1/scale, userData: 'fix5' }); 
+	fix4 = new Rigid(world, {shape: "block", type: "static", sensor: true, x: 830/scale, y: -1000/scale, height: 10/scale,  width:1/scale, userData: 'fix4' });
+  
+			
+  var listener = new Box2D.Dynamics.b2ContactListener;
+			listener.BeginContact = function(contact) {
+				 fxA=contact.GetFixtureA(); // 1st COLLISION FIXTURE
+				 fxB=contact.GetFixtureB(); // 2nd COLLISION FIXTURE
+				 sA=fxA.IsSensor(); // Will store whether 1st fixture is a sensor or not (true or false)
+				 sB=fxB.IsSensor(); // Will store whether 2nd fixture is a sensor or not (true or false)
+				 if((sA && !sB) || (sB && !sA))	{ // Will go on further iff Fixture A or B not both are sensors.
+					 if(sA)	{
+	if(fxA.GetBody().GetUserData().data.userData == 'fix4' && fxB.GetBody() == droid.body) { contacts = 'pool_start';  audio.play(); };
+	if(fxA.GetBody().GetUserData().data.userData == 'fix5' && fxB.GetBody() == droid.body) { contacts = 'wor'; audio.play(); moveDroid = false; }
+						 }														
+					 if(sB) {
+	if(fxB.GetBody().GetUserData().data.userData == 'fix4' && fxA.GetBody() == droid.body) { contacts = 'pool_start'; audio.play(); };
+	if(fxB.GetBody().GetUserData().data.userData == 'fix5' && fxA.GetBody() == droid.body) { contacts = 'wor'; audio.play(); moveDroid = false;	};
+						}												
+			}
+} 
+
+
+world.SetContactListener(listener);
+    var debugDraw = new b2DebugDraw();
+    debugDraw.SetSprite(document.getElementById("b2dCanvas").getContext("2d"));
+    debugDraw.SetDrawScale(30.0);
+    debugDraw.SetFillAlpha(0.5);
+    debugDraw.SetLineThickness(1.0);
+    debugDraw.SetFlags(b2DebugDraw.e_shapeBit);
+    world.SetDebugDraw(debugDraw);
+    
+	if(drawtelefer){ canvasOffset.x = canvas.width/2+500; canvasOffset.y = canvas.height/2; }
+	
+    originTransform = new b2Transform(); 	
+	
+    function update() {
+		if(magnet){
+			for(i=0;i<pull.length;i++)	{
+				var c1 = pull[i].GetWorldCenter();
+				var c2 = bodyFlyManForearmR.GetWorldCenter();
+				var vec = new b2Vec2();
+				vec.x = c2.x - c1.x;
+				vec.y = c2.y - c1.y;
+				var mag = Math.sqrt(((vec.x*vec.x)+(vec.y*vec.y)));
+				vec.x = vec.x / mag;
+				vec.y = vec.y / mag;
+				var force = new b2Vec2();
+				force.x = 0 * vec.x;
+				force.y = 45 * vec.y;
+				pull[i].ApplyForce(force, pull[i].GetWorldPoint(new b2Vec2(0,0)));
+				pull[i].SetAngularDamping(15);
+			}
+			}
+			
+	frame++;
+        world.Step(1 / 30, 8, 2);
+        canvas.width = canvas.width; // Clear the screen 
+        context.clearRect(0,0,canvas.width,canvas.height);
+		
+ 
+	if(drawater){
+			}
+ if (drawater )    { 
+			world.SetContactListener(listener3);
+			context.globalAlpha = animLevel3, animLevel3 += .01; if (animLevel3 > 1) {animLevel3 = 1;}; 
+			pos3T = {x : 0, y : 0}; 
+   v = droid.body.GetPosition(); pos3T.x = -v.x*scale + canvas.width / 2 +300; pos3T.y = -v.y*scale + canvas.height/2 +100; context.translate(pos3T.x, pos3T.y);
+			context.drawImage( imgdesert,-900, -180, 3400,800 ); context.drawImage( imgcoral,150, 600, 2000,800 ); 			
+					}
+		else if(drawtelefer && drawater == false){	
+			world.SetContactListener(listener2);	
+context.globalAlpha = animLevel4; animLevel4 += .025; if (animLevel4 > 1) {animLevel4 = 1;}
+     var posA = droid.body.GetPosition();
+        var vel = droid.body.GetLinearVelocity();
+        var futurePos = new b2Vec2( posA.x*30+150 + 0.05 * vel.x, -posA.y*30-370 + 0.05 * vel.y );
+        setViewCenterWorld( futurePos );
+		} 	
+		else {
+			world.SetContactListener(listener);
+context.globalAlpha = animLevel4; animLevel4 += .01; if (animLevel4 > 1) {animLevel4 = 1;}
+			pos3 = {x : 0, y : 0}; 
+   v = droid.body.GetPosition(); pos3.x = -v.x*scale + canvas.width / 2; pos3.y = -v.y*scale + canvas.height/2; context.translate(pos3.x, pos3.y);
+	   		//context.restore();
+			}
+		wor();
+     ang += 0.2;
+     sc += 0.1;
+    if (ang > Math.PI*2 ){      ang = Math.PI *2   }
+    if (sc > 1){ sc = 1};
+    context.save();
+   context.translate(50, -500);
+    context.scale(sc, sc);
+    context.rotate(-ang);
+	if(!drawater && !drawtelefer){
+	context.drawImage(desert_in_saudi, fix4.body.GetPosition().x -canvas.width/1.3, fix4.body.GetPosition().y -canvas.height/2.2, canvas.width*1.5, canvas.height);
+          }
+		 
+		 if( engineer_state == 0 ) { // Start to wave            
+          context.save();
+          context.translate( droid.body.GetPosition().x * scale, droid.body.GetPosition().y * scale );
+          context.rotate( droid.body.GetAngle()/180 );
+			if(dir == 2)  {context.drawImage( imagebox,  0, 120, 60, 60, -90, 453, 100, 100 )};
+			if(dir === 1)  {context.drawImage( imagebox,  60, 120, 60, 60, -90, 453, 100, 100 )};
+                     context.restore();
+        }
+		if( engineer_state == 1 ) { // left
+            if( frame % 6 == 0 ) engineer_frame++;
+			engineer_frame = engineer_frame % 8;
+            context.save();
+            context.translate( droid.body.GetPosition().x * scale, droid.body.GetPosition().y * scale );
+			// context.scale(-1, 1);
+           context.rotate( droid.body.GetAngle()/180 );
+            context.drawImage( imagebox, 60 * engineer_frame, 0, 60, 60, -90, 453, 100, 100 );
+            context.restore();
+            dir = 1;              
+        }
+		if( engineer_state ==  2) { // right
+            if( frame % 6 == 0 ) engineer_frame++;
+			engineer_frame = engineer_frame % 8;
+           context.save();
+            context.translate( droid.body.GetPosition().x * scale, droid.body.GetPosition().y * scale );
+           context.rotate( droid.body.GetAngle()/180 );
+            context.drawImage( imagebox, 60 * engineer_frame, 60, 60, 60, -100, 453, 100, 100 );
+           context.restore();
+            dir = 2; 
+        }
+		if(!drawater && !drawtelefer){
+	if( frame % 3 == 0 ) light_frame++;
+        light_frame = light_frame % 30;
+        context.drawImage( imageportal, 64 * light_frame, 0, 62, 62, fix4.body.GetPosition().x+320, fix4.body.GetPosition().y-65, 62, 124 );
+        context.drawImage( imageportal, 64 * light_frame, 0, 62, 62, fix4.body.GetPosition().x -400, fix4.body.GetPosition().y-40, 62, 124 );
+	if( frame % 6 == 0 ) azul_frame++;
+        azul_frame = azul_frame % 9;
+        var imgZ = 200 * animazul, imgZ1 = 100 * animazul1, imgZ2 = 10 * animazul, imgZ3 = 10 * animazul1;
+        animazul += .003; 
+        animazul1 += .005; 
+        if (animazul >= 10) {animazul = 1;  }	
+        if (animazul1 >= 20) {animazul1 = 1;  }	
+		if( frame % 12 == 0 ) azul_frame2++;
+        azul_frame2 = azul_frame2 % 8;
+        context.drawImage( imageazul, 95 * azul_frame, 0, 95, 95, imgZ+fix4.body.GetPosition().x-1100 , imgZ2+fix4.body.GetPosition().y+150, 95, 96 );
+        context.drawImage( imageazul, 95 * azul_frame2, 0, 95, 95, imgZ1-550+fix4.body.GetPosition().x-500 , (imgZ3/2)+fix4.body.GetPosition().y+180, 95, 96 );
+	context.globalAlpha = animLevel2;
+        context.fillStyle = "yellow";
+        context.font = "italic 30pt Arial";
+        context.drawImage(img,fix4.body.GetPosition().x +270, fix4.body.GetPosition().y -230, 150, 150);
+        context.drawImage(imgT,fix4.body.GetPosition().x -450, fix4.body.GetPosition().y -210, 150, 150);
+        //context.fillText("BOAT", fix4.body.GetPosition().x * scale-30, fix4.body.GetPosition().y * scale-150);
+        //context.fillText("CAR", fix4.body.GetPosition().x * scale-330, fix4.body.GetPosition().y * scale-150);
+        animLevel2 += .01; 
+        if (animLevel2 > 1) {animLevel2 = 0;}	
+}	 	
+        context.restore(); 
+				//world.DrawDebugData();	
+	  if(drawater){	Rwall.update(); boxT.update(); lo.update(); Lwall.update(); LwallH.update(); }
+	  
+	fix2.update();	fix22.update();	fix4.update();	fix5.update();
+	
+	if (drawtelefer){
+if( frame % 3 == 0 ) light_frame++;
+        light_frame = light_frame % 30;
+        context.drawImage( imageportal, 64 * light_frame, 0, 62, 62, fixT2.body.GetPosition().x*30-20, fixT2.body.GetPosition().y*30-55, 62, 124 );
+        var fPos=cab1.body.GetPosition();
+        var angle=cab1.body.GetAngle();
+        context.translate(fPos.x*30-offsetX*30,fPos.y*30+offsetY*30);
+        context.rotate(angle);
+        context.drawImage(crate2,-90,-60,180,120);
+        context.rotate(-angle);
+        context.translate(-fPos.x*30+offsetX*30,-fPos.y*30-offsetY*30);
+		}
+		
+	if( !drawtelefer){	pool(); }
+	
+		if(drawater){rigidBody.update(); fi.update(); fix1T.update();  boom.update();}
+			world.ClearForces();   
+    }
+	
+ trup = window.setInterval(update,1000/30);
+	
+    document.addEventListener("keydown", function(e) { 
+        switch (event.keyCode) {
+            case 39 :	
+			if (moveDroid){
+				droid.body.SetLinearVelocity(new b2Vec2(5,droid.body.GetLinearVelocity().y)); engineer_state = 2;   }	
+           break;           
+            case 37 :	
+			if (moveDroid){
+				droid.body.SetLinearVelocity(new b2Vec2(-5,droid.body.GetLinearVelocity().y));  engineer_state = 1;	}
+        } // CONTROLS 
+	 
+	   }, false)
+
+	   	
+    document.addEventListener("keyup", function(e) { 
+	
+        switch (event.keyCode) {
+             case 39 :			
+				droid.body.SetLinearVelocity(new b2Vec2(0,droid.body.GetLinearVelocity().y)); engineer_state = 0; dir=2;	
+           break;           
+            case 37 :	
+				droid.body.SetLinearVelocity(new b2Vec2(0,droid.body.GetLinearVelocity().y)); engineer_state = 0; dir=1;
+		    break;
+          case 40 :	
+				lo.body.ApplyImpulse(new b2Vec2(0,0), lo.body.GetWorldCenter()); 
+              break;            
+		    case 38 :
+		        lo.body.ApplyImpulse(new b2Vec2(0,0), lo.body.GetWorldCenter());  
+             break;
+			case 32 :  
+             break;
+        } // CONTROLS 
+	 
+	   }, false)
+
+</script>
+
+</body></html>
