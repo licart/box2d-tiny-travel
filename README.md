@@ -1,8 +1,12 @@
 # box2d-tiny-travel
 
 HELLO WORLD
-THIS IS A VERY SMALL BOX2D EXPERIMENT
+
+THIS IS A VERY SMALL BOX2D physics EXPERIMENT
+only use the box2dweb (+jquery)
+
 INCLUDE TELEPORTER, TELEFERIK MAGNETIZER, BOAT WATER POOL
+with many canvas effect animation.
 
 Move the player with the left, right, up and down keys.
 This is a very hard work for me to make it.
