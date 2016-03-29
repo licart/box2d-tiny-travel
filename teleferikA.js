@@ -375,7 +375,7 @@ rj.enableLimit = true;       rj.enableMotor = true;
      rj3.localAnchorB=new b2Vec2(0,0);
    loo = world.CreateJoint(rj3);//loo.SetMaxMotorTorque(55);
        
-	droid.body.SetPosition( new b2Vec2( carf.body.GetPosition().x-2, carf.body.GetPosition().y-2 ) );  
+	droid.body.SetPosition( new b2Vec2( carf.body.GetPosition().x-1, carf.body.GetPosition().y-2 ) );  
 	droid.body.SetLinearVelocity( new b2Vec2( 0, droid.body.GetLinearVelocity().y ) );	
 	contacts = null; 
 drawtelefer = true;
