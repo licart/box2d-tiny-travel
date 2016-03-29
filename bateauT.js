@@ -270,12 +270,12 @@ joint_defB.localAnchorA = new b2Vec2(-2, 0); joint_def.localAnchorB = new b2Vec2
 document.addEventListener("keydown", function(e) { 
         switch (event.keyCode) {
             case 39 :			
-			if (!moveDroid && !drastelefer){
+			if (!moveDroid && !drawtelefer){
 				lo.body.ApplyImpulse(new b2Vec2(10,0), lo.body.GetWorldCenter());  audioB.play();
 				}
            break;           
             case 37 :	
-			if (!moveDroid && !drastelefer){
+			if (!moveDroid && !drawtelefer){
 				lo.body.ApplyImpulse(new b2Vec2(-15,0), lo.body.GetWorldCenter()); audioB.play();
 				}
 		    break;         			
