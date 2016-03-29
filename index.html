@@ -303,7 +303,7 @@ world.SetContactListener(listener);
 context.globalAlpha = animLevel4; animLevel4 += .025; if (animLevel4 > 1) {animLevel4 = 1;}
      var posA = droid.body.GetPosition();
         var vel = droid.body.GetLinearVelocity();
-        var futurePos = new b2Vec2( posA.x*30+150 + 0.05 * vel.x, -posA.y*30-370 + 0.05 * vel.y );
+        var futurePos = new b2Vec2( posA.x*30+150 + 0.05 * vel.x, -posA.y*30-350 + 0.05 * vel.y );
         setViewCenterWorld( futurePos );
 		} 	
 		else {
