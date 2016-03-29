@@ -17,5 +17,7 @@ JUST WITH RIGHT AND LEFT KEYS YOU MOVE THE TELEFERIK.
 THERE IS SOME VIDEO BLOCKS ON THE ROOF, ACTIVATE THE MAGNET WHEN YOU ARE JUST ON A VIDEO BLOCK IT WILL BE MAGNETIZED
 AND VIDEO WILL START.
 
+
+You can play it at: http://licart.github.io/box2d-tiny-travel/
 will be updated soon.
-Thank's.
+Thank's to github, Thank's for reading.
