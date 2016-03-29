@@ -35,7 +35,7 @@ var lo, boom;
    imglo.src = "duct.png";
    var imgcoral = new Image();
    imgcoral.src = "coral-reef.jpg";
-			var audioB = new Audio("BOATCYLINDER.mp3");
+			var audioB = new Audio("boatcy.mp3");
 
 var drawater;drawater=false;
 
