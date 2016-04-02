@@ -37,7 +37,7 @@
     imgFlyManForarm.src="forarm.png";
 
 	  var directionT, speedT, torque;
-      speedT = 2.5; torque = 45; speedT = 2.5;  directionT = 0; 
+       torque = 85; speedT = 2;  directionT = 0; 
 	
 var animLevel4T = 0;
 	var contactsT, moveDroid;
@@ -239,12 +239,12 @@ drawtelefer=true;
 		 care2 = new Rigid(world, {image: crate, image22: video2, video2: "001.mp4", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:50, y:50, width: 3, height:2}); 
 		 care3 = new Rigid(world, {image: crate, image3: video3, video3: "movie.mp4", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:70, y:60, width: 3, height:2}); 
 		 care4 = new Rigid(world, {color: "brown", image4: video4, video4: "001.mp4", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:90, y:60, width: 3, height:2}); 
-		 care5 = new Rigid(world, {color: "brown", image5: video5, video5: "movie.mp4", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:110, y:65, width: 3, height:2}); 
+		 care5 = new Rigid(world, {color: "brown", image5: video5, video5: "http://audio.scdn.arkena.com/11007/franceinfo-lofi32.mp3", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:110, y:65, width: 3, height:2}); 
 		 care6 = new Rigid(world, {image: crate, image6: video6, video6: "movie.mp4", userData: "Care", fixedrot: true, density : 0.13, friction: 1, restitution : 0.1, shape: "block", x:10, y:35, width: 3, height:2}); 
 	
-	 wheel1 = new Rigid(world, {image: crate4, density: 0.8, friction : 5, restitution : 0, shape: "circle", x: 127.3 , y:  37.9 , radius: 0.8, width: 0.8, height: 0.8}); 
-	 wheel2 = new Rigid(world, {image: crate4, density: 0.8, friction : 5, restitution : 0, shape: "circle",  x:  120.8 , y:  37.9 , radius: 0.8, width: 0.8, height: 0.8}); 
-	 carb = new Rigid(world, {image: crate, density : 2, friction: 0.5, restitution : 0.01, shape: "block", filter: -1, x:124, y: 38, width: 3, height: 0.25}); 
+	 wheel1 = new Rigid(world, {image: crate4, density: 0.8, friction : 5, restitution : 0.1, shape: "circle", x: 127.3 , y:  37.9 , radius: 0.8, width: 0.8, height: 0.8}); 
+	 wheel2 = new Rigid(world, {image: crate4, density: 0.8, friction : 5, restitution : 0.17, shape: "circle",  x:  120.8 , y:  37.9 , radius: 0.8, width: 0.8, height: 0.8}); 
+	 carb = new Rigid(world, {image: crate, density : 0.8, friction: 0.5, restitution : 0.01, shape: "block", filter: -1, x:124, y: 38, width: 3, height: 0.25}); 
 revoluteJointDef = new b2RevoluteJointDef();      revoluteJointDef.enableMotor = true;
       revoluteJointDef.Initialize(carb.body, wheel1.body, wheel1.body.GetWorldCenter());
   this.motor1 = world.CreateJoint(revoluteJointDef);
@@ -261,15 +261,18 @@ revoluteJointDef = new b2RevoluteJointDef();      revoluteJointDef.enableMotor =
 			 revoluteJointDef2.collideConnected = true;  
 	revoluteJointDef2.lowerAngle = -90 * Math.PI/2;
 	revoluteJointDef2.upperAngle = 190*Math.PI/2;  
-							  pivot = world.CreateJoint(revoluteJointDef2);	pivot.SetMaxMotorTorque(30);pivot.SetMotorSpeed(0);
+							  pivot = world.CreateJoint(revoluteJointDef2);	pivot.SetMaxMotorTorque(55);pivot.SetMotorSpeed(0);
 							  
-   carf = new Rigid(world, {image: crate, density : 0.6, friction: 1, restitution : 0.1, shape: "block", x:124, y: 51.5, width: 3, height:0.25}); 
- 	 	cab1 = new Rigid(world, {  filter: -3, density : 0.003, friction: 1, restitution : 0.1, shape: "block", x:124, y: 48, width: 3, height:2}); 
+   carf = new Rigid(world, {image: crate, density : 1, friction: 1, restitution : 0.1, shape: "block", x:124, y: 51, width: 3, height:0.25}); 
+ 	 	cab1 = new Rigid(world, {  filter: -3, density : 0.003, friction: 1, restitution : 0.1, shape: "block", x:124, y: 48, width: 3, height:2}); revoluteJointDef2 = new b2RevoluteJointDef()
   revoluteJointDef.Initialize(cab1.body, card.body, cab1.body.GetWorldCenter());  col = world.CreateJoint(revoluteJointDef);
     revoluteJointDef11 = new b2RevoluteJointDef();   revoluteJointDef11.Initialize(carf.body, cab1.body, carf.body.GetWorldCenter());
  revoluteJointDef11.enableLimit = true;     revoluteJointDef11.collideConnected = false;    revoluteJointDef11.enableMotor = true;
  col = world.CreateJoint(revoluteJointDef11); 
-
+ carg = new Rigid(world, {image: crate, density : 0.01, friction: 1, restitution : 0.1, shape: "block", x:124, y: 50, width: 0.5, height:0.1}); 
+				revoluteJointDefT = new b2RevoluteJointDef();  	revoluteJointDefT.bodyA=carf.body;        revoluteJointDefT.bodyB=carg.body;
+                   revoluteJointDefT.localAnchorA=new b2Vec2(2,0.3);            revoluteJointDefT.localAnchorB=new b2Vec2(0,1); 
+  revoluteJointDefT.collideConnected = true;  	cold = world.CreateJoint(revoluteJointDefT); 
   
     var bodyDef = new b2BodyDef;
     var fixDef = new b2FixtureDef;	
@@ -296,7 +299,7 @@ rj.enableLimit = true;       rj.enableMotor = true;
      rj.bodyA=tb1;
      rj.bodyB=carf.body;
      rj.localAnchorA=new b2Vec2(0,1);
-     rj.localAnchorB=new b2Vec2(0,-0.65);
+     rj.localAnchorB=new b2Vec2(0,-0.7);
 	 
      looo = world.CreateJoint(rj);looo.SetMaxMotorTorque(25);
 
@@ -375,7 +378,7 @@ rj.enableLimit = true;       rj.enableMotor = true;
      rj3.localAnchorB=new b2Vec2(0,0);
    loo = world.CreateJoint(rj3);//loo.SetMaxMotorTorque(55);
        
-	droid.body.SetPosition( new b2Vec2( carf.body.GetPosition().x-1, carf.body.GetPosition().y-2 ) );  
+	droid.body.SetPosition( new b2Vec2( carf.body.GetPosition().x-0.5, carf.body.GetPosition().y-2 ) );  
 	droid.body.SetLinearVelocity( new b2Vec2( 0, droid.body.GetLinearVelocity().y ) );	
 	contacts = null; 
 drawtelefer = true;
@@ -511,6 +514,9 @@ document.addEventListener("keydown", function(e) { if(drawtelefer && moveDroid =
 		    break;
           case 40 :	 
 		  audioT2.play(); magnet=true; if (loo.m_length < 1.8) {loo.m_length += (2 );}; //zoomIn();
+		  break;
+		  case 32 :	 
+		  break;
 		}
         } // CONTROLS 
 	  
